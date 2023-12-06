@@ -1,21 +1,24 @@
+import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Persona implements Dominio {
-	
+
 	String nombre;
 	String apellidos;
-	String fecha_nacimiento;
+	LocalDate fecha_nacimiento;
 	String nacionalidad;
 	String titulacion;
 	boolean certIngles;
 	int telefono;
 	String correo;
-	
+
 	public Persona(String nombre, String apellidos, String fecha_nacimiento, String nacionalidad, String titulacion,
 			boolean certIngles, int telefono, String correo) {
 		super();
 		this.nombre = setNombre(nombre);
 		this.apellidos = setApellidos(apellidos);
-		this.fecha_nacimiento = setFecha_nacimiento(fecha_nacimiento);
+		this.fecha_nacimiento = setFechaNacimiento(fecha_nacimiento);
 		this.nacionalidad = setNacionalidad(nacionalidad);
 		this.titulacion = setTitulacion(titulacion);
 		this.certIngles = setCertIngles(certIngles);
@@ -29,6 +32,7 @@ public class Persona implements Dominio {
 
 	public String setNombre(String nombre) {
 		return this.nombre = nombre;
+
 	}
 
 	public String getApellidos() {
@@ -39,12 +43,13 @@ public class Persona implements Dominio {
 		return this.apellidos = apellidos;
 	}
 
-	public String getFecha_nacimiento() {
+	public LocalDate getFecha_nacimiento() {
 		return fecha_nacimiento;
 	}
 
-	public String setFecha_nacimiento(String fecha_nacimiento) {
-		return this.fecha_nacimiento = fecha_nacimiento;
+	public LocalDate setFechaNacimiento(String fechaNacimiento) {
+		this.fecha_nacimiento = Dominio.validateFechaNacimiento(fechaNacimiento);
+		return this.fecha_nacimiento;
 	}
 
 	public String getNacionalidad() {
@@ -52,7 +57,7 @@ public class Persona implements Dominio {
 	}
 
 	public String setNacionalidad(String nacionalidad) {
-		return this.nacionalidad = nacionalidad;
+		return nacionalidad;
 	}
 
 	public String getTitulacion() {
@@ -60,7 +65,13 @@ public class Persona implements Dominio {
 	}
 
 	public String setTitulacion(String titulacion) {
-		return this.titulacion = titulacion;
+		if (titulacion.toLowerCase().trim().equals("Máster")) {
+			return "Máster";
+		} else if (titulacion.toLowerCase().trim().equals("Doctorado")) {
+			return "Doctorado";
+		} else  {
+			return "Otros";
+		}
 	}
 
 	public boolean getCertIngles() {
@@ -68,7 +79,7 @@ public class Persona implements Dominio {
 	}
 
 	public boolean setCertIngles(boolean certIngles) {
-		return this.certIngles = certIngles;
+		return certIngles;
 	}
 
 	public int getTelefono() {
@@ -76,7 +87,12 @@ public class Persona implements Dominio {
 	}
 
 	public int setTelefono(int telefono) {
-		return this.telefono = telefono;
+		if (telefono > 0 && String.valueOf(telefono).length() == 9) {
+			this.telefono = telefono;
+			return telefono;
+		} else {
+			throw new IllegalArgumentException("Número de teléfono no válido: " + telefono);
+		}
 	}
 
 	public String getCorreo() {
@@ -84,7 +100,16 @@ public class Persona implements Dominio {
 	}
 
 	public String setCorreo(String correo) {
-		return this.correo = correo;
+
+		String EMAIL_PATTERN = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(correo);
+		if (matcher.matches()) {
+			return correo;
+		} else {
+			throw new IllegalArgumentException("El formato de su corre: " + correo + " es incorrecto.");
+		}
 	}
 
 	@Override
