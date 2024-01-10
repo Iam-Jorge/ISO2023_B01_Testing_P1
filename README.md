@@ -2,7 +2,7 @@
 
 ## 1. Implementación
    
-Realizado por JESÚS DÍAZ-TOLEDO CRIADO y GEORGI ANGELOV CHERVENYASHKI
+Realizado por JESÚS DÍAZ-TOLEDO CRIADO y GEORGI ANGELOV
 
 ## 2. Gestión de Pruebas
    
